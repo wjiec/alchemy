@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package alchemy.bizerr.pberr;
+option go_package = "bizerr/pberr";
+
+
+message WithHttpStatus {
+  uint32 http_code = 1;
+}
+
+message WithCause {
+  string cause_error = 1;
+}
