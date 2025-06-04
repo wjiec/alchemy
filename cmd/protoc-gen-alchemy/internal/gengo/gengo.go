@@ -91,7 +91,7 @@ func genServiceDesc(g *protogen.GeneratedFile, service *protogen.Service) error 
 					g.P("HttpMethod: ", strconv.Quote(httpMethod), ",")
 					g.P("PathPattern: ", strconv.Quote(pathPattern), ",")
 					g.P("Handler: _", service.GoName, "_", method.GoName, "_Handler,")
-					if len(rule.Body) != 0 {
+					if len(rule.Body) != 0 && rule.Body != "*" {
 						g.P("RequestField: ", alchemyPackage.Ident("KeyPath"), "{")
 						{
 							g.P("Name: ", strconv.Quote(rule.Body), ",")
@@ -104,7 +104,7 @@ func genServiceDesc(g *protogen.GeneratedFile, service *protogen.Service) error 
 						}
 						g.P("},")
 					}
-					if len(rule.ResponseBody) != 0 {
+					if len(rule.ResponseBody) != 0 && rule.ResponseBody != "*" {
 						g.P("ResponseField: ", alchemyPackage.Ident("KeyPath"), "{")
 						{
 							g.P("Name: ", strconv.Quote(rule.ResponseBody), ",")

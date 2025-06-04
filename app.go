@@ -2,10 +2,13 @@ package alchemy
 
 import (
 	"context"
+	"log/slog"
 
+	"buf.build/go/protovalidate"
 	"github.com/spf13/cobra"
 	"golang.org/x/sync/errgroup"
 	"google.golang.org/grpc"
+	"google.golang.org/protobuf/proto"
 )
 
 // App represents an application with gRPC and HTTP server capabilities,
@@ -63,7 +66,7 @@ func (a *App) wrapGrpcUnaryInterceptor() grpc.UnaryServerInterceptor {
 		}
 
 		// Apply interceptors in reverse order so that the first interceptor is the outermost
-		for i := len(a.unaryInterceptors) - 1; i >= 0; i-- {
+		for i := 0; i < len(a.unaryInterceptors); i++ {
 			interceptor, prevHandler := a.unaryInterceptors[i], chainedHandler
 			chainedHandler = func(ctx context.Context, req any) (any, error) {
 				return interceptor(ctx, req, info, prevHandler)
@@ -90,6 +93,9 @@ func New(name string, options ...AppOption) (*App, error) {
 		}
 	}
 
+	app.unaryInterceptors = append(app.unaryInterceptors, DefaultPanicRecoveryInterceptor())
+	app.unaryInterceptors = append(app.unaryInterceptors, DefaultValidateInterceptor())
+
 	return app, nil
 }
 
@@ -113,5 +119,44 @@ func WithUnaryInterceptor(interceptor UnaryInterceptor) AppOption {
 	return func(app *App) error {
 		app.unaryInterceptors = append(app.unaryInterceptors, interceptor)
 		return nil
+	}
+}
+
+// WithResetUnaryInterceptors replaces all existing unary interceptors with the provided interceptors.
+func WithResetUnaryInterceptors(interceptors ...UnaryInterceptor) AppOption {
+	return func(app *App) error {
+		app.unaryInterceptors = interceptors
+		return nil
+	}
+}
+
+// DefaultPanicRecoveryInterceptor creates an interceptor that recovers from panics
+// that might occur during request handling. When a panic occurs, it logs the error
+// and allows the application to continue running instead of crashing.
+func DefaultPanicRecoveryInterceptor() UnaryInterceptor {
+	return func(ctx context.Context, req any, info *UnaryServerInfo, handler UnaryHandler) (any, error) {
+		defer func() {
+			if r := recover(); r != nil {
+				slog.Error("Observed a panic", "panic", r)
+			}
+		}()
+
+		return handler(ctx, req)
+	}
+}
+
+// DefaultValidateInterceptor creates an interceptor that automatically validates
+// incoming requests before they reach the handler. It checks if the request
+// implements either ValidateAll() or Validate() methods, and calls the appropriate
+// method to perform validation. Returns an error if validation fails.
+func DefaultValidateInterceptor() UnaryInterceptor {
+	return func(ctx context.Context, req any, info *UnaryServerInfo, handler UnaryHandler) (any, error) {
+		if pb, ok := req.(proto.Message); ok {
+			if err := protovalidate.Validate(pb); err != nil {
+				return nil, err
+			}
+		}
+
+		return handler(ctx, req)
 	}
 }

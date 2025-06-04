@@ -36,12 +36,6 @@ plugins:
     out: api
     opt:
       - paths=source_relative
-{{- if eq (flag "with-validate") "true" }}
-  - remote: buf.build/bufbuild/validate-go
-    out: api
-    opt:
-      - paths=source_relative
-{{- end }}
   - local: protoc-gen-alchemy
     out: api
     opt:

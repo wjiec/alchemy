@@ -46,3 +46,7 @@ func TestWithUnaryInterceptor(t *testing.T) {
 
 	assert.NotNil(t, alchemy.WithUnaryInterceptor(loggerInterceptor))
 }
+
+func TestWithResetUnaryInterceptors(t *testing.T) {
+	assert.NotNil(t, alchemy.WithResetUnaryInterceptors())
+}
