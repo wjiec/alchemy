@@ -5,7 +5,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/wjiec/alchemy/bizerr/pberr"
+	errorspb "github.com/wjiec/alchemy/internal/errors"
 )
 
 // Error represents a business logic error that includes an HTTP error code.
@@ -37,9 +37,9 @@ func (e *Error) Error() string {
 // the HTTP status code as additional details.
 func (e *Error) GRPCStatus() *status.Status {
 	statusErr := status.New(codes.Code(e.code), e.Error())
-	statusErr, _ = statusErr.WithDetails(&pberr.WithHttpStatus{HttpCode: e.status})
+	statusErr, _ = statusErr.WithDetails(&errorspb.WithHttpStatus{HttpCode: e.status})
 	if e.cause != nil {
-		statusErr, _ = statusErr.WithDetails(&pberr.WithCause{CauseError: e.cause.Error()})
+		statusErr, _ = statusErr.WithDetails(&errorspb.WithCause{CauseError: e.cause.Error()})
 	}
 
 	return statusErr
@@ -84,9 +84,9 @@ func FromError(err error) (*Error, bool) {
 		bizErr.code = uint32(statusErr.Code())
 		for _, detail := range statusErr.Details() {
 			switch v := detail.(type) {
-			case *pberr.WithHttpStatus:
+			case *errorspb.WithHttpStatus:
 				bizErr.status = v.HttpCode
-			case *pberr.WithCause:
+			case *errorspb.WithCause:
 				bizErr.cause = errors.New(v.CauseError)
 			}
 		}

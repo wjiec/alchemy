@@ -4,9 +4,6 @@
 // 	protoc        (unknown)
 // source: internal/testpb/proto3.proto
 
-// buf:lint:ignore PACKAGE_DIRECTORY_MATCH
-// buf:lint:ignore PACKAGE_VERSION_SUFFIX
-
 package testpb
 
 import (

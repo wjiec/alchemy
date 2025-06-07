@@ -18,7 +18,7 @@ func SetupSignalHandler() context.Context {
 	ctx, cancel := context.WithCancel(context.Background())
 
 	c := make(chan os.Signal, 2)
-	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
+	signal.Notify(c, os.Interrupt, syscall.SIGTERM, syscall.SIGQUIT)
 	go func() {
 		<-c
 		cancel()

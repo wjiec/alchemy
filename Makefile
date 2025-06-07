@@ -24,14 +24,9 @@ help: ## Display this help.
 
 ##@ Development
 
-.PHONY: prepare
-prepare: ## Generate protocol buffer dependencies and export them
-	- buf build
-	if buf dep update &>/dev/null; then buf export --output third_party/proto; fi
-
 .PHONY: generate
-generate: ## Generate code from protocol buffer definitions
-	buf generate --exclude-path third_party
+generate: ## Generate code from protocol buffer definitions.
+	buf build && buf generate
 
 
 ##@ Build

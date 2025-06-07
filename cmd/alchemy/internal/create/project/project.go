@@ -14,7 +14,7 @@ import (
 	echoapi "github.com/wjiec/alchemy/cmd/alchemy/internal/create/project/templates/api/echo"
 	echov1api "github.com/wjiec/alchemy/cmd/alchemy/internal/create/project/templates/api/echo/v1"
 	"github.com/wjiec/alchemy/cmd/alchemy/internal/create/project/templates/cmd/app"
-	"github.com/wjiec/alchemy/internal/template"
+	"github.com/wjiec/alchemy/cmd/alchemy/internal/template"
 )
 
 func Command() *cobra.Command {

@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/wjiec/alchemy/internal/template"
+	"github.com/wjiec/alchemy/cmd/alchemy/internal/template"
 )
 
 func TestNewBuilder(t *testing.T) {

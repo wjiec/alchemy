@@ -3,7 +3,7 @@ package v1
 import (
 	"github.com/spf13/pflag"
 
-	"github.com/wjiec/alchemy/internal/template"
+	"github.com/wjiec/alchemy/cmd/alchemy/internal/template"
 )
 
 type EchoImplGo struct{}

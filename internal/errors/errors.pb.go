@@ -2,9 +2,9 @@
 // versions:
 // 	protoc-gen-go v1.36.6
 // 	protoc        (unknown)
-// source: bizerr/pberr/pberr.proto
+// source: internal/errors/errors.proto
 
-package pberr
+package errors
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -30,7 +30,7 @@ type WithHttpStatus struct {
 
 func (x *WithHttpStatus) Reset() {
 	*x = WithHttpStatus{}
-	mi := &file_bizerr_pberr_pberr_proto_msgTypes[0]
+	mi := &file_internal_errors_errors_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -42,7 +42,7 @@ func (x *WithHttpStatus) String() string {
 func (*WithHttpStatus) ProtoMessage() {}
 
 func (x *WithHttpStatus) ProtoReflect() protoreflect.Message {
-	mi := &file_bizerr_pberr_pberr_proto_msgTypes[0]
+	mi := &file_internal_errors_errors_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -55,7 +55,7 @@ func (x *WithHttpStatus) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WithHttpStatus.ProtoReflect.Descriptor instead.
 func (*WithHttpStatus) Descriptor() ([]byte, []int) {
-	return file_bizerr_pberr_pberr_proto_rawDescGZIP(), []int{0}
+	return file_internal_errors_errors_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *WithHttpStatus) GetHttpCode() uint32 {
@@ -74,7 +74,7 @@ type WithCause struct {
 
 func (x *WithCause) Reset() {
 	*x = WithCause{}
-	mi := &file_bizerr_pberr_pberr_proto_msgTypes[1]
+	mi := &file_internal_errors_errors_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -86,7 +86,7 @@ func (x *WithCause) String() string {
 func (*WithCause) ProtoMessage() {}
 
 func (x *WithCause) ProtoReflect() protoreflect.Message {
-	mi := &file_bizerr_pberr_pberr_proto_msgTypes[1]
+	mi := &file_internal_errors_errors_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -99,7 +99,7 @@ func (x *WithCause) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WithCause.ProtoReflect.Descriptor instead.
 func (*WithCause) Descriptor() ([]byte, []int) {
-	return file_bizerr_pberr_pberr_proto_rawDescGZIP(), []int{1}
+	return file_internal_errors_errors_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *WithCause) GetCauseError() string {
@@ -109,37 +109,36 @@ func (x *WithCause) GetCauseError() string {
 	return ""
 }
 
-var File_bizerr_pberr_pberr_proto protoreflect.FileDescriptor
+var File_internal_errors_errors_proto protoreflect.FileDescriptor
 
-const file_bizerr_pberr_pberr_proto_rawDesc = "" +
+const file_internal_errors_errors_proto_rawDesc = "" +
 	"\n" +
-	"\x18bizerr/pberr/pberr.proto\x12\x14alchemy.bizerr.pberr\"-\n" +
+	"\x1cinternal/errors/errors.proto\x12\x17alchemy.internal.errors\"-\n" +
 	"\x0eWithHttpStatus\x12\x1b\n" +
 	"\thttp_code\x18\x01 \x01(\rR\bhttpCode\",\n" +
 	"\tWithCause\x12\x1f\n" +
 	"\vcause_error\x18\x01 \x01(\tR\n" +
-	"causeErrorB\xbf\x01\n" +
-	"\x18com.alchemy.bizerr.pberrB\n" +
-	"PberrProtoP\x01Z%github.com/wjiec/alchemy/bizerr/pberr\xa2\x02\x03ABP\xaa\x02\x14Alchemy.Bizerr.Pberr\xca\x02\x14Alchemy\\Bizerr\\Pberr\xe2\x02 Alchemy\\Bizerr\\Pberr\\GPBMetadata\xea\x02\x16Alchemy::Bizerr::Pberrb\x06proto3"
+	"causeErrorB\xd2\x01\n" +
+	"\x1bcom.alchemy.internal.errorsB\vErrorsProtoP\x01Z(github.com/wjiec/alchemy/internal/errors\xa2\x02\x03AIE\xaa\x02\x17Alchemy.Internal.Errors\xca\x02\x17Alchemy\\Internal\\Errors\xe2\x02#Alchemy\\Internal\\Errors\\GPBMetadata\xea\x02\x19Alchemy::Internal::Errorsb\x06proto3"
 
 var (
-	file_bizerr_pberr_pberr_proto_rawDescOnce sync.Once
-	file_bizerr_pberr_pberr_proto_rawDescData []byte
+	file_internal_errors_errors_proto_rawDescOnce sync.Once
+	file_internal_errors_errors_proto_rawDescData []byte
 )
 
-func file_bizerr_pberr_pberr_proto_rawDescGZIP() []byte {
-	file_bizerr_pberr_pberr_proto_rawDescOnce.Do(func() {
-		file_bizerr_pberr_pberr_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_bizerr_pberr_pberr_proto_rawDesc), len(file_bizerr_pberr_pberr_proto_rawDesc)))
+func file_internal_errors_errors_proto_rawDescGZIP() []byte {
+	file_internal_errors_errors_proto_rawDescOnce.Do(func() {
+		file_internal_errors_errors_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_internal_errors_errors_proto_rawDesc), len(file_internal_errors_errors_proto_rawDesc)))
 	})
-	return file_bizerr_pberr_pberr_proto_rawDescData
+	return file_internal_errors_errors_proto_rawDescData
 }
 
-var file_bizerr_pberr_pberr_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
-var file_bizerr_pberr_pberr_proto_goTypes = []any{
-	(*WithHttpStatus)(nil), // 0: alchemy.bizerr.pberr.WithHttpStatus
-	(*WithCause)(nil),      // 1: alchemy.bizerr.pberr.WithCause
+var file_internal_errors_errors_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_internal_errors_errors_proto_goTypes = []any{
+	(*WithHttpStatus)(nil), // 0: alchemy.internal.errors.WithHttpStatus
+	(*WithCause)(nil),      // 1: alchemy.internal.errors.WithCause
 }
-var file_bizerr_pberr_pberr_proto_depIdxs = []int32{
+var file_internal_errors_errors_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
 	0, // [0:0] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
@@ -147,26 +146,26 @@ var file_bizerr_pberr_pberr_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for field type_name
 }
 
-func init() { file_bizerr_pberr_pberr_proto_init() }
-func file_bizerr_pberr_pberr_proto_init() {
-	if File_bizerr_pberr_pberr_proto != nil {
+func init() { file_internal_errors_errors_proto_init() }
+func file_internal_errors_errors_proto_init() {
+	if File_internal_errors_errors_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_bizerr_pberr_pberr_proto_rawDesc), len(file_bizerr_pberr_pberr_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_internal_errors_errors_proto_rawDesc), len(file_internal_errors_errors_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_bizerr_pberr_pberr_proto_goTypes,
-		DependencyIndexes: file_bizerr_pberr_pberr_proto_depIdxs,
-		MessageInfos:      file_bizerr_pberr_pberr_proto_msgTypes,
+		GoTypes:           file_internal_errors_errors_proto_goTypes,
+		DependencyIndexes: file_internal_errors_errors_proto_depIdxs,
+		MessageInfos:      file_internal_errors_errors_proto_msgTypes,
 	}.Build()
-	File_bizerr_pberr_pberr_proto = out.File
-	file_bizerr_pberr_pberr_proto_goTypes = nil
-	file_bizerr_pberr_pberr_proto_depIdxs = nil
+	File_internal_errors_errors_proto = out.File
+	file_internal_errors_errors_proto_goTypes = nil
+	file_internal_errors_errors_proto_depIdxs = nil
 }

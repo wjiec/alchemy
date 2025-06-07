@@ -3,7 +3,7 @@ package app
 import (
 	"github.com/spf13/pflag"
 
-	"github.com/wjiec/alchemy/internal/template"
+	"github.com/wjiec/alchemy/cmd/alchemy/internal/template"
 )
 
 type MainGo struct {
