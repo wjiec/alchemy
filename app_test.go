@@ -38,6 +38,15 @@ func TestWithSubCommand(t *testing.T) {
 	assert.NotNil(t, alchemy.WithSubCommand(echoCommand))
 }
 
+func TestWithRootExtend(t *testing.T) {
+	var author string
+	extend := func(root *cobra.Command) {
+		root.Flags().StringVar(&author, "author", "YOUR NAME", "Author name for copyright attribution")
+	}
+
+	assert.NotNil(t, alchemy.WithRootExtend(extend))
+}
+
 func TestWithUnaryInterceptor(t *testing.T) {
 	loggerInterceptor := func(ctx context.Context, req any, info *alchemy.UnaryServerInfo, handler alchemy.UnaryHandler) (any, error) {
 		slog.Info("new request coming", "info", info)

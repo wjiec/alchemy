@@ -110,6 +110,14 @@ func WithSubCommand(cmd ...*cobra.Command) AppOption {
 	}
 }
 
+// WithRootExtend adds custom setting to the root command of the App.
+func WithRootExtend(f func(root *cobra.Command)) AppOption {
+	return func(app *App) error {
+		f(app.root)
+		return nil
+	}
+}
+
 type UnaryHandler = grpc.UnaryHandler
 type UnaryServerInfo = grpc.UnaryServerInfo
 type UnaryInterceptor func(context.Context, any, *UnaryServerInfo, UnaryHandler) (any, error)
