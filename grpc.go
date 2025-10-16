@@ -10,9 +10,9 @@ import (
 
 // WithGrpcServer sets the gRPC server for the App, enabling the application to handle
 // gRPC requests using the specified server configuration.
-func WithGrpcServer(network, address string, options ...GrpcOption) AppOption {
+func WithGrpcServer(addr Addr, options ...GrpcOption) AppOption {
 	return func(app *App) error {
-		app.grpcServer = &grpcServer{network: network, address: address}
+		app.grpcServer = &grpcServer{addr: addr}
 		for _, applyGrpcOption := range options {
 			if err := applyGrpcOption(app.grpcServer); err != nil {
 				return err
@@ -26,8 +26,7 @@ func WithGrpcServer(network, address string, options ...GrpcOption) AppOption {
 
 // grpcServer represents a gRPC server.
 type grpcServer struct {
-	network    string
-	address    string
+	addr       Addr
 	reflection bool
 
 	options          []grpc.ServerOption
@@ -37,7 +36,7 @@ type grpcServer struct {
 
 // Start initiates the gRPC server and begins serving requests.
 func (gs *grpcServer) Start(ctx context.Context) error {
-	l, err := net.Listen(gs.network, gs.address)
+	l, err := net.Listen(gs.addr.Network(ctx), gs.addr.String(ctx))
 	if err != nil {
 		return err
 	}
@@ -79,6 +78,14 @@ func GrpcWithReflection(reflection bool) GrpcOption {
 func GrpcWithServerOption(options ...grpc.ServerOption) GrpcOption {
 	return func(server *grpcServer) error {
 		server.options = append(server.options, options...)
+		return nil
+	}
+}
+
+// GrpcWithServices registers a provided service with the gRPC server.
+func GrpcWithServices(register func(grpc.ServiceRegistrar)) GrpcOption {
+	return func(server *grpcServer) error {
+		server.services = append(server.services, register)
 		return nil
 	}
 }

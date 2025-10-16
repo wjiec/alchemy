@@ -21,12 +21,19 @@ type App struct {
 	httpServer *httpServer
 	grpcServer *grpcServer
 
+	beforeStart       []BeforeStartHook
 	unaryInterceptors []UnaryInterceptor
 }
 
 // Start begins the execution of the application by executing the root command
 // in the context provided.
 func (a *App) Start(ctx context.Context) error {
+	for _, hook := range a.beforeStart {
+		if err := hook(ctx, a.root); err != nil {
+			return err
+		}
+	}
+
 	return a.root.ExecuteContext(ctx)
 }
 
@@ -54,7 +61,7 @@ func (a *App) serve(ctx context.Context) error {
 
 // wrapGrpcUnaryInterceptor creates a gRPC UnaryServerInterceptor by wrapping the app's unary interceptors.
 func (a *App) wrapGrpcUnaryInterceptor() grpc.UnaryServerInterceptor {
-	return func(ctx context.Context, req any, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (any, error) {
+	return func(ctx context.Context, req any, info *grpc.UnaryServerInfo, handler UnaryHandler) (any, error) {
 		// If there are no interceptors, just call the handler directly
 		if len(a.unaryInterceptors) == 0 {
 			return handler(ctx, req)
@@ -110,14 +117,6 @@ func WithSubCommand(cmd ...*cobra.Command) AppOption {
 	}
 }
 
-// WithRootExtend adds custom setting to the root command of the App.
-func WithRootExtend(f func(root *cobra.Command)) AppOption {
-	return func(app *App) error {
-		f(app.root)
-		return nil
-	}
-}
-
 type UnaryHandler = grpc.UnaryHandler
 type UnaryServerInfo = grpc.UnaryServerInfo
 type UnaryInterceptor func(context.Context, any, *UnaryServerInfo, UnaryHandler) (any, error)
@@ -166,5 +165,16 @@ func DefaultValidateInterceptor() UnaryInterceptor {
 		}
 
 		return handler(ctx, req)
+	}
+}
+
+// BeforeStartHook represents the hooks executed before the app starts.
+type BeforeStartHook func(ctx context.Context, root *cobra.Command) error
+
+// WithBeforeStart adds a BeforeStartHook to the App's to be run before application start.
+func WithBeforeStart(hook BeforeStartHook) AppOption {
+	return func(app *App) error {
+		app.beforeStart = append(app.beforeStart, hook)
+		return nil
 	}
 }

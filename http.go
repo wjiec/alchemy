@@ -25,11 +25,10 @@ const (
 
 // WithHttpServer sets the HTTP server for the App, enabling the application to handle
 // HTTP requests using the specified server configuration.
-func WithHttpServer(network, address string, options ...HttpOption) AppOption {
+func WithHttpServer(addr Addr, options ...HttpOption) AppOption {
 	return func(app *App) error {
 		app.httpServer = &httpServer{
-			network: network,
-			address: address,
+			addr: addr,
 
 			codec:    NewHttpDynamicCodec(),
 			fallback: mux.NewRouter(),
@@ -50,8 +49,7 @@ func WithHttpServer(network, address string, options ...HttpOption) AppOption {
 
 // grpcServer represents a HTTP server.
 type httpServer struct {
-	network string
-	address string
+	addr Addr
 
 	codec    CodecFactory
 	fallback *mux.Router
@@ -67,7 +65,7 @@ type httpServer struct {
 
 // Start initiates the HTTP server and begins serving requests.
 func (hs *httpServer) Start(ctx context.Context) error {
-	l, err := net.Listen(hs.network, hs.address)
+	l, err := net.Listen(hs.addr.Network(ctx), hs.addr.String(ctx))
 	if err != nil {
 		return err
 	}

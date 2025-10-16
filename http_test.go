@@ -19,7 +19,7 @@ import (
 
 func TestWithHttpServer(t *testing.T) {
 	app, err := alchemy.New(t.Name(),
-		alchemy.WithHttpServer("tcp", ":0"),
+		alchemy.WithHttpServer(alchemy.TCP(":0")),
 	)
 
 	assert.NoError(t, err)
